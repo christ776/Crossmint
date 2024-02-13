@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "dotenv": "^16.4.2",
+    "throttled-queue": "^2.1.4",
     "typescript": "^5.3.3"
   },
   "devDependencies": {

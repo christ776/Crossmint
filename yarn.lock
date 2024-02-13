@@ -14,6 +14,11 @@ dotenv@^16.4.2:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.2.tgz#7ca798f89ae2011846bbdbf6470785307754120d"
   integrity sha512-rZSSFxke7d9nYQ5NeMIwp5PP+f8wXgKNljpOb7KtH6SKW1cEqcXAz9VSJYVLKe7Jhup/gUYOkaeSVyK8GJ+nBg==
 
+throttled-queue@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/throttled-queue/-/throttled-queue-2.1.4.tgz#4e2008c73ab3f72ba1bb09496c3cc9c5b745dbee"
+  integrity sha512-YGdk8sdmr4ge3g+doFj/7RLF5kLM+Mi7DEciu9PHxnMJZMeVuZeTj31g4VE7ekUffx/IdbvrtOCiz62afg0mkg==
+
 typescript@^5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"

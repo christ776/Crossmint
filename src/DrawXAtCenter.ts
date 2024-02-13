@@ -1,5 +1,14 @@
-import 'dotenv/config'
-import setPolyanetAt from './API/Polyanets/POST';
+import 'dotenv/config';
+import throttledQueue from 'throttled-queue';
+
+import setPolyanetAt from './api/Polyanets/POST';
+
+const throttle = throttledQueue(1, 1000, true);
+
+interface Point {
+  row: number;
+  column: number;
+}
 
 /**
  * Call this function to Draw and X in given NxM elemnts Matrix 
@@ -7,52 +16,49 @@ import setPolyanetAt from './API/Polyanets/POST';
  * @param height 
  */
 async function drawShapeAtCenter(mat: string[][]): Promise<void> {
-    //make sure matri0 has odd height 
-    if (mat.length % 2 === 0 || mat[0].length % 2 === 0) {
-        throw new Error('Matrix doesn\'t have odd height, cant find a proper center');
+  //make sure matri0 has odd height 
+  if (mat.length % 2 === 0 || mat[0].length % 2 === 0) {
+    throw new Error('Matrix doesn\'t have odd height, cant find a proper center');
+  }
+
+  const offset = 2;
+  const points: Point[] = []
+
+  for (let i = offset; i < mat.length - offset; i++) {
+    mat[i][i] = 'X';
+    points.push({ row: i, column: i });
+    // Handle center case, avoid duplicated request to the same spot
+    if (i !== mat.length - i - 1) {
+      mat[i][mat.length - i - 1] = 'X';
+      points.push({ row: i, column: mat.length - i - 1 });
     }
 
-    const offset = 2;
-    const URL = process.env.MEGAVERSE_API_URL;
-    const CANDIDATE_ID = process.env.CANDIDATE_ID;
-    if (URL === undefined) {
-        throw new Error('Missing Crossmint URL');
-    }
-    if (CANDIDATE_ID === undefined) {
-        throw new Error('Missing Candidate ID');
-    }
+  }
+  try {
+    await Promise.all(
+      points.map(point => throttle(() => setPolyanetAt(point.row, point.column)))
+    );
+  } catch (error) {
+    console.error(error);
+  }
 
-    const promises: Array<Promise<Response>> = [];
-
-    for (let i = offset; i < mat.length - offset;  i++ ) {
-        mat[i][i] = 'X';
-        mat[i][mat.length - i - 1] = 'X';
-        promises.push(setPolyanetAt(URL, i, i, CANDIDATE_ID));
-        promises.push(setPolyanetAt(URL, i, mat.length - i - 1, CANDIDATE_ID));
-    }
-    try {
-        await Promise.all(promises);
-    } catch(error) {
-        console.error(error);
-    }
-
-    console.table(mat);
+  console.table(mat);
 }
 
-const mat = 
-    [["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"],
-    ["0","0","0","0","0","0","0","0","0","0","0"]];
+const mat =
+  [["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+  ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]];
 
-    await drawShapeAtCenter(mat);
+await drawShapeAtCenter(mat);
 
 /** 
  * {"goal":
