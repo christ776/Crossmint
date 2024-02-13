@@ -3,25 +3,21 @@ const URL = process.env.MEGAVERSE_API_URL;
 
 export default async function setPolyanetAt(row: number, column: number) {
   if (URL === undefined) {
-    throw new Error('Missing Crossmint URL');
+    throw new Error("Missing Crossmint URL");
   }
   if (CANDIDATE_ID === undefined) {
-    throw new Error('Missing Candidate ID');
+    throw new Error("Missing Candidate ID");
   }
   const response = await fetch(`${URL}/polyanets`, {
-    method: 'POST',
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       row,
       column,
-      candidateId: CANDIDATE_ID
+      candidateId: CANDIDATE_ID,
     }),
   });
-  console.log('HTTP Status:', response.status);
+  console.log("HTTP Status:", response.status);
 }
-
-
-
-
