@@ -4,6 +4,8 @@
 - Test for Phase 1 should be run using `npx esrun src/DrawXAtCenter.ts` (where you'll be asked to install esrun if you don't already have it)
 - For phase 2 `npx esrun src/CrossmintLogo.ts`
 
+- All network interactions are being sent to a shared throttled queue, where they get sent one per second until the queue is depleted to avoid spamming the backend and getting `HTTP-429` errors.
+
 Output should look like
 
 ```
