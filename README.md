@@ -9,6 +9,8 @@
 Output should look like
 
 ```
+...
+...
 Set Soloon at [22,24] with color:red | HTTP Status: 200
 Set Cometh at [22,27] with down direction | HTTP Status: 200
 Set Polyanet at [23,2] | HTTP Status: 200
@@ -28,4 +30,6 @@ Set Cometh at [26,26] with up direction | HTTP Status: 200
 Set Cometh at [27,5] with left direction | HTTP Status: 200
 Set Cometh at [28,10] with right direction | HTTP Status: 200
 Set Cometh at [28,20] with left direction | HTTP Status: 200
+...
+...
 ```
